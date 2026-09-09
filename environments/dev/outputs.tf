@@ -13,3 +13,8 @@ output "eks_cluster_endpoint" {
 output "eks_cluster_version" {
   value = module.eks.cluster_version
 }
+
+output "ecr_repository_urls" {
+  description = "ECR repository URLs"
+  value       = module.ecr.repository_urls
+}
