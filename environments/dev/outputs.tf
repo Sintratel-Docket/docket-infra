@@ -18,3 +18,8 @@ output "ecr_repository_urls" {
   description = "ECR repository URLs"
   value       = module.ecr.repository_urls
 }
+
+output "github_ecr_push_role_arn" {
+  description = "IAM role ARN used by microservice GitHub Actions workflows to push images to ECR"
+  value       = aws_iam_role.github_ecr_push.arn
+}

@@ -69,3 +69,17 @@ ecr_repositories = {
     encryption_type      = "AES256"
   }
 }
+
+github_organization    = "Sintratel-Docket"
+github_organization_id = "318832249"
+
+github_microservice_repositories = {
+  frontend              = "1361878377"
+  auth-api              = "1361870878"
+  users-api             = "1361876335"
+  todos-api             = "1361877577"
+  log-message-processor = "1361877935"
+}
+
+github_ecr_push_role_name = "GitHubActionsECRPush"
+github_ecr_push_branch    = "main"
