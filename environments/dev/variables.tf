@@ -29,11 +29,16 @@ variable "kubernetes_version" {
 }
 
 variable "eks_instance_types" {
-  description = "EC2 instance types used by EKS nodes"
+  description = "EC2 instance types used by EKS"
   type        = list(string)
 }
 
 variable "github_actions_role_arn" {
   description = "IAM role used by GitHub Actions"
+  type        = string
+}
+
+variable "cluster_admin_user_arn" {
+  description = "IAM user used for local EKS administration"
   type        = string
 }
