@@ -1,0 +1,15 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+errored.tfstate
+crash.log
+
+# Terraform variable files that may contain secrets
+*.auto.tfvars
+*.auto.tfvars.json
+
+# OS / IDE
+.vscode/
+.DS_Store
