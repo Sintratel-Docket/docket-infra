@@ -23,4 +23,6 @@ eks_instance_types = [
   "t3.small"
 ]
 
+cluster_admin_user_arn = "arn:aws:iam::429418377318:user/JuanP"
+
 github_actions_role_arn = "arn:aws:iam::429418377318:role/GitHubActionsDocketInfra"
