@@ -87,3 +87,28 @@ variable "ecr_repositories" {
     encryption_type      = string
   }))
 }
+
+variable "github_organization" {
+  description = "GitHub organization that owns the microservice repositories"
+  type        = string
+}
+
+variable "github_organization_id" {
+  description = "Immutable GitHub organization owner ID used in OIDC subjects"
+  type        = string
+}
+
+variable "github_microservice_repositories" {
+  description = "Map of GitHub microservice repository names to immutable repository IDs"
+  type        = map(string)
+}
+
+variable "github_ecr_push_role_name" {
+  description = "IAM role assumed by GitHub Actions to push container images to ECR"
+  type        = string
+}
+
+variable "github_ecr_push_branch" {
+  description = "Git branch authorized to assume the ECR push role"
+  type        = string
+}
