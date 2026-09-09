@@ -1,21 +1,26 @@
 variable "aws_region" {
-  type = string
+  description = "AWS region"
+  type        = string
 }
 
 variable "vpc_cidr" {
-  type = string
+  description = "CIDR block for the DEV VPC"
+  type        = string
 }
 
 variable "azs" {
-  type = list(string)
+  description = "Availability Zones"
+  type        = list(string)
 }
 
 variable "private_subnets" {
-  type = list(string)
+  description = "Private subnet CIDRs"
+  type        = list(string)
 }
 
 variable "public_subnets" {
-  type = list(string)
+  description = "Public subnet CIDRs"
+  type        = list(string)
 }
 
 variable "kubernetes_version" {
@@ -24,6 +29,11 @@ variable "kubernetes_version" {
 }
 
 variable "eks_instance_types" {
-  description = "Instance types for the EKS nodes"
+  description = "EC2 instance types used by EKS nodes"
   type        = list(string)
+}
+
+variable "github_actions_role_arn" {
+  description = "IAM role used by GitHub Actions"
+  type        = string
 }

@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "eks" {
-  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.2.0"
+  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.3.0"
 
   cluster_name       = "docket-dev"
   kubernetes_version = var.kubernetes_version
@@ -31,4 +31,6 @@ module "eks" {
   min_size     = 1
   max_size     = 2
   desired_size = 1
+
+  github_actions_role_arn = var.github_actions_role_arn
 }

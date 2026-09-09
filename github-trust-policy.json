@@ -9,10 +9,11 @@
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-        },
-        "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:Sintratel-Docket/docket-infra:*"
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:sub": [
+            "repo:Sintratel-Docket@318832249/docket-infra@1362067509:pull_request",
+            "repo:Sintratel-Docket@318832249/docket-infra@1362067509:ref:refs/heads/main"
+          ]
         }
       }
     }

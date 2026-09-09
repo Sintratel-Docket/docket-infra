@@ -22,3 +22,5 @@ kubernetes_version = "1.35"
 eks_instance_types = [
   "t3.small"
 ]
+
+github_actions_role_arn = "arn:aws:iam::429418377318:role/GitHubActionsDocketInfra"
