@@ -28,7 +28,7 @@ eks_instance_types = [
 ]
 
 eks_min_size     = 2
-eks_max_size     = 2
+eks_max_size     = 3
 eks_desired_size = 2
 
 eks_coredns_addon_version    = "v1.14.3-eksbuild.16"
