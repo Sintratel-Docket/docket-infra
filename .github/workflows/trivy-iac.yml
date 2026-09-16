@@ -1,0 +1,76 @@
+name: Trivy IaC
+
+# Scans the Terraform in this repository for misconfigurations and for secrets
+# committed by accident. It is independent from Terraform Dev: it runs on every
+# pull request and push to main, and never touches AWS, so it gives feedback
+# before a plan/apply ever happens.
+#
+# Findings land in the GitHub Security tab. The gate starts in warn mode
+# (TRIVY_EXIT_CODE: "0"); flip it to "1" once the current findings are triaged.
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  TRIVY_SEVERITY: HIGH,CRITICAL
+  TRIVY_EXIT_CODE: "0"
+
+jobs:
+  trivy-iac:
+    name: Terraform Misconfiguration Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Reports first (SARIF never fails), gate afterwards, so findings always
+      # reach code scanning even when the build is set to block.
+      - name: Scan IaC (SARIF)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-iac.sarif
+          severity: ${{ env.TRIVY_SEVERITY }}
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-iac.sarif
+          category: trivy-iac
+
+      - name: Scan for committed secrets (SARIF)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          format: sarif
+          output: trivy-secrets.sarif
+
+      - name: Upload secrets SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-secrets.sarif
+          category: trivy-secrets
+
+      - name: Gate on findings
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: table
+          severity: ${{ env.TRIVY_SEVERITY }}
+          exit-code: ${{ env.TRIVY_EXIT_CODE }}
