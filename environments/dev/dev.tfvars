@@ -31,6 +31,11 @@ eks_min_size     = 2
 eks_max_size     = 2
 eks_desired_size = 2
 
+eks_coredns_addon_version    = "v1.14.3-eksbuild.16"
+eks_kube_proxy_addon_version = "v1.35.3-eksbuild.25"
+eks_vpc_cni_addon_version    = "v1.23.1-eksbuild.1"
+eks_node_ami_release_version = "1.35.7-20260903"
+
 cluster_admin_user_arn = "arn:aws:iam::429418377318:user/JuanP"
 
 github_actions_role_arn = "arn:aws:iam::429418377318:role/GitHubActionsDocketInfra"
