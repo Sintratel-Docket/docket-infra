@@ -1,0 +1,80 @@
+name: Infracost
+
+# Estima el costo mensual de la infraestructura en cada PR que toque el
+# ambiente dev y comenta la diferencia (rama base vs. rama del PR).
+#
+# Infracost parsea el HCL directamente: no ejecuta `terraform apply`, no toca
+# AWS y no necesita credenciales del cloud. Solo requiere el secret
+# INFRACOST_API_KEY (clave gratuita de infracost.io).
+
+on:
+  pull_request:
+    paths:
+      - "environments/**"
+      - ".github/workflows/infracost.yml"
+
+permissions:
+  contents: read
+  pull-requests: write # necesario para publicar/actualizar el comentario
+
+env:
+  TF_ROOT: environments/dev
+  VAR_FILE: dev.tfvars
+  # Umbral (USD/mes) por encima del cual el PR recibe una advertencia.
+  COST_THRESHOLD: "50"
+
+jobs:
+  infracost:
+    name: Infracost estimate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v3
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+
+      # 1) Costo de la rama base (el "antes")
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          ref: "${{ github.event.pull_request.base.ref }}"
+
+      - name: Infracost baseline
+        run: |
+          infracost breakdown \
+            --path="${TF_ROOT}" \
+            --terraform-var-file="${VAR_FILE}" \
+            --format=json \
+            --out-file=/tmp/infracost-base.json
+
+      # 2) Costo de la rama del PR (el "después") y la diferencia
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+
+      - name: Infracost diff
+        run: |
+          infracost diff \
+            --path="${TF_ROOT}" \
+            --terraform-var-file="${VAR_FILE}" \
+            --compare-to=/tmp/infracost-base.json \
+            --format=json \
+            --out-file=/tmp/infracost.json
+
+      # 3) Comentario en el PR con el costo de los cambios (se actualiza solo)
+      - name: Post Infracost comment
+        run: |
+          infracost comment github \
+            --path=/tmp/infracost.json \
+            --repo="$GITHUB_REPOSITORY" \
+            --github-token="${{ github.token }}" \
+            --pull-request="${{ github.event.pull_request.number }}" \
+            --behavior=update
+
+      # 4) Guardrail de costo (advertencia, no bloquea el merge)
+      - name: Cost guardrail
+        run: |
+          DIFF=$(jq -r '.diffTotalMonthlyCost // "0"' /tmp/infracost.json)
+          echo "Cambio mensual estimado: \$$DIFF (umbral: \$$COST_THRESHOLD)"
+          if awk -v d="$DIFF" -v t="$COST_THRESHOLD" 'BEGIN{ exit !(d > t) }'; then
+            echo "::warning::Este PR aumenta el costo estimado en mas de \$$COST_THRESHOLD/mes (\$$DIFF). Revisar antes de aprobar."
+          fi
