@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "eks" {
-  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.5.0"
+  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.6.0"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
@@ -39,6 +39,11 @@ module "eks" {
 
   cluster_admin_user_arn  = var.cluster_admin_user_arn
   github_actions_role_arn = var.github_actions_role_arn
+
+  # Prefix delegation: sube el max-pods por nodo (t3.small pasa de 11 a 110),
+  # necesario para Kubecost/observabilidad y densidad de pods en dev.
+  enable_prefix_delegation = true
+  node_max_pods            = 110
 }
 
 module "ecr" {
