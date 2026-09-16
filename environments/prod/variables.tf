@@ -72,3 +72,23 @@ variable "github_actions_role_arn" {
   description = "IAM role used by GitHub Actions"
   type        = string
 }
+
+variable "eks_coredns_addon_version" {
+  description = "Pinned CoreDNS EKS add-on version"
+  type        = string
+}
+
+variable "eks_kube_proxy_addon_version" {
+  description = "Pinned kube-proxy EKS add-on version"
+  type        = string
+}
+
+variable "eks_vpc_cni_addon_version" {
+  description = "Pinned VPC CNI EKS add-on version"
+  type        = string
+}
+
+variable "eks_node_ami_release_version" {
+  description = "Pinned EKS managed node AMI release"
+  type        = string
+}
