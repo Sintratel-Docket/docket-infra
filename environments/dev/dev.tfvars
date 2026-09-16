@@ -38,6 +38,10 @@ eks_node_ami_release_version = "1.35.7-20260903"
 
 cluster_admin_user_arn = "arn:aws:iam::429418377318:user/JuanP"
 
+additional_cluster_admin_principals = {
+  karen = "arn:aws:iam::429418377318:user/Karen"
+}
+
 github_actions_role_arn = "arn:aws:iam::429418377318:role/GitHubActionsDocketInfra"
 
 project_name = "Sintratel-Docket"
