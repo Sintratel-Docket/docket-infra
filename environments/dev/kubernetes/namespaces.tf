@@ -57,3 +57,15 @@ resource "kubernetes_namespace_v1" "log_message_processor" {
     }
   }
 }
+
+resource "kubernetes_namespace_v1" "observability" {
+  metadata {
+    name = "dev-observability"
+
+    labels = {
+      environment = "dev"
+      service     = "observability"
+      managed-by  = "terraform"
+    }
+  }
+}
