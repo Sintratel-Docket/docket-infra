@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "eks" {
-  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.5.1"
+  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.7.0"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
@@ -37,6 +37,7 @@ module "eks" {
   vpc_cni_addon_version    = var.eks_vpc_cni_addon_version
   node_ami_release_version = var.eks_node_ami_release_version
 
-  cluster_admin_user_arn  = var.cluster_admin_user_arn
-  github_actions_role_arn = var.github_actions_role_arn
+  cluster_admin_user_arn              = var.cluster_admin_user_arn
+  additional_cluster_admin_principals = var.additional_cluster_admin_principals
+  github_actions_role_arn             = var.github_actions_role_arn
 }

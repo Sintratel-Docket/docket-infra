@@ -68,6 +68,12 @@ variable "cluster_admin_user_arn" {
   type        = string
 }
 
+variable "additional_cluster_admin_principals" {
+  description = "Additional IAM principals granted EKS cluster administrator access"
+  type        = map(string)
+  default     = {}
+}
+
 variable "github_actions_role_arn" {
   description = "IAM role used by GitHub Actions"
   type        = string
