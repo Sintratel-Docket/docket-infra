@@ -112,3 +112,23 @@ variable "github_ecr_push_branch" {
   description = "Git branch authorized to assume the ECR push role"
   type        = string
 }
+
+variable "eks_coredns_addon_version" {
+  description = "Pinned CoreDNS EKS add-on version"
+  type        = string
+}
+
+variable "eks_kube_proxy_addon_version" {
+  description = "Pinned kube-proxy EKS add-on version"
+  type        = string
+}
+
+variable "eks_vpc_cni_addon_version" {
+  description = "Pinned VPC CNI EKS add-on version"
+  type        = string
+}
+
+variable "eks_node_ami_release_version" {
+  description = "Pinned EKS managed node AMI release"
+  type        = string
+}
