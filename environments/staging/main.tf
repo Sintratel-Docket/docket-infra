@@ -16,7 +16,7 @@ module "network" {
 }
 
 module "eks" {
-  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.5.0"
+  source = "git::https://github.com/Sintratel-Docket/terraform-modules.git//eks?ref=v0.5.1"
 
   cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
