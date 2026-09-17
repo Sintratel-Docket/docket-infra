@@ -24,7 +24,7 @@ cluster_name       = "docket-dev"
 kubernetes_version = "1.35"
 
 eks_instance_types = [
-  "t3.medium"
+  "m7i-flex.large"
 ]
 
 eks_min_size     = 2
